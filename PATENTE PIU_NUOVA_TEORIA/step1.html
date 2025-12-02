@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step 1 - Fondamenti della Segnaletica - PATENTE+</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div>
+                    <div class="logo">
+                        <img src="jpg/ICONA.jpg" alt="PATENTE+" class="logo-img">
+                        <span>PATENTE+</span>
+                    </div>
+                    <nav class="nav-menu">
+                        <a href="index.html">🏠 Home</a>
+                        <a href="prezzi.html">💰 Prezzi</a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="step-detail-hero">
+            <div class="container">
+                <div class="step-badge">STEP 1 DI 4</div>
+                <h1><span class="gradient-text">Fondamenti della Segnaletica</span></h1>
+                <p class="step-price-large">€99<span>/mese 1</span></p>
+            </div>
+        </section>
+
+        <section class="step-detail-section">
+            <div class="container">
+                <div class="step-detail-grid">
+
+                    <!-- Left Column - Offer Details -->
+                    <div class="offer-details">
+                        <h2>🎯 Cosa Include lo Step 1</h2>
+
+                        <div class="offer-card">
+                            <h3>📹 4 Video Completi</h3>
+                            <ul>
+                                <li><strong>Video 1:</strong> Il Linguaggio della Strada</li>
+                                <li><strong>Video 2:</strong> Segnali di Pericolo</li>
+                                <li><strong>Video 3:</strong> Segnali di Divieto</li>
+                                <li><strong>Video 4:</strong> Segnali di Obbligo</li>
+                            </ul>
+                        </div>
+
+                        <div class="offer-card">
+                            <h3>📄 Materiali Didattici</h3>
+                            <ul>
+                                <li>✅ 4 PDF scaricabili con riassunti completi</li>
+                                <li>✅ 4 Infografiche visive ad alta risoluzione</li>
+                                <li>✅ 4 Mappe Mentali per memorizzazione rapida</li>
+                            </ul>
+                        </div>
+
+                        <div class="offer-card highlight">
+                            <h3>💎 Vantaggi Esclusivi</h3>
+                            <ul>
+                                <li>🎓 Accesso immediato ai contenuti</li>
+                                <li>📱 Disponibile su tutti i dispositivi</li>
+                                <li>♾️ Accesso illimitato a vita</li>
+                                <li>🔄 Aggiornamenti gratuiti</li>
+                                <li>💬 Supporto via email</li>
+                            </ul>
+                        </div>
+
+                        <div class="value-proposition">
+                            <h3>🚀 Perché Iniziare con lo Step 1?</h3>
+                            <p>Lo Step 1 getta le basi fondamentali per la tua preparazione alla patente. Imparerai a
+                                riconoscere e interpretare correttamente i segnali stradali più importanti, essenziali
+                                per superare l'esame teorico.</p>
+                            <p><strong>Inizia oggi e sblocca il tuo percorso verso la patente!</strong></p>
+                        </div>
+                    </div>
+
+                    <!-- Right Column - Payment Form -->
+                    <div class="payment-form-container">
+                        <div class="payment-card">
+                            <h2>💳 Completa l'Acquisto</h2>
+                            <p class="payment-subtitle">Inserisci i tuoi dati per procedere al pagamento</p>
+
+                            <form id="paymentForm" class="payment-form">
+                                <div class="form-group">
+                                    <label for="fullName">Nome e Cognome *</label>
+                                    <input type="text" id="fullName" required placeholder="Mario Rossi">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="email">Email *</label>
+                                    <input type="email" id="email" required placeholder="mario.rossi@email.com">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="phone">Telefono *</label>
+                                    <input type="tel" id="phone" required placeholder="333 1234567" pattern="[0-9]{10}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="address">Indirizzo</label>
+                                    <input type="text" id="address" placeholder="Via Roma 123, Milano">
+                                </div>
+
+                                <div class="payment-summary">
+                                    <div class="summary-row">
+                                        <span>Step 1 - Fondamenti</span>
+                                        <span>€99,00</span>
+                                    </div>
+                                    <div class="summary-row total">
+                                        <span>Totale</span>
+                                        <span>€99,00</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group checkbox-group">
+                                    <label>
+                                        <input type="checkbox" required>
+                                        <span>Accetto i <a href="#">termini e condizioni</a> e la <a href="#">privacy
+                                                policy</a></span>
+                                    </label>
+                                </div>
+
+                                <button type="submit" class="btn-payment-submit">
+                                    PROCEDI AL PAGAMENTO - €99
+                                </button>
+
+                                <div class="payment-methods">
+                                    <p>Metodi di pagamento accettati:</p>
+                                    <div class="payment-icons">
+                                        💳 Carta di Credito | 🏦 Bonifico | 📱 PayPal
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="security-badge">
+                            <p>🔒 Pagamento sicuro e protetto</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        document.getElementById('paymentForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const formData = {
+                fullName: document.getElementById('fullName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                address: document.getElementById('address').value,
+                step: 1,
+                amount: 99,
+                timestamp: new Date().toISOString()
+            };
+
+            // Save to localStorage
+            const paymentKey = `payment_step1_${Date.now()}`;
+            localStorage.setItem(paymentKey, JSON.stringify(formData));
+
+            alert('✅ Dati ricevuti! Verrai reindirizzato alla pagina di pagamento.\n\n(In produzione, qui si integrerebbe Stripe/PayPal)');
+
+            // In production, redirect to payment gateway
+            // window.location.href = 'payment-gateway-url';
+        });
+    </script>
+</body>
+
+</html>

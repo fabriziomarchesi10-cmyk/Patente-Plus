@@ -1,0 +1,21 @@
+/* Button functionality fix */
+
+/* Ensure all interactive elements work */
+button,
+.btn,
+a,
+input,
+.toggle-switch {
+    cursor: pointer;
+}
+
+/* Specific buttons */
+#downloadPdfBtn,
+#downloadInfographicBtn,
+#downloadMindMapBtn,
+#prevBtn,
+#nextBtn,
+#autoplayToggle,
+.btn-back {
+    cursor: pointer;
+}

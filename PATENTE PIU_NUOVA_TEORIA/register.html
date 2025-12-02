@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrazione - PATENTE+</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <header>
+                <div class="container">
+                    <div class="header-content">
+                        <div>
+                            <div class="logo">
+                                <img src="jpg/ICONA.jpg" alt="PATENTE+" class="logo-img">
+                                <span>PATENTE+</span>
+                            </div>
+                            <nav class="nav-menu">
+                                <a href="index.html">🏠 Home</a>
+                                <a href="pdfs.html">📄 PDF</a>
+                                <a href="infografiche.html">🖼️ Infografiche</a>
+                                <a href="mappe.html">🧠 Mappe Mentali</a>
+                                <a href="prezzi.html">💰 Prezzi</a>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <form id="registerForm" class="auth-form">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required placeholder="tuaemail@esempio.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required placeholder="Minimo 6 caratteri" minlength="6">
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Conferma Password</label>
+                    <input type="password" id="confirmPassword" required placeholder="Ripeti la password" minlength="6">
+                </div>
+
+                <div id="errorMessage" class="error-message" style="display: none;"></div>
+
+                <button type="submit" class="btn btn-primary btn-large">Registrati</button>
+            </form>
+
+            <div class="auth-footer">
+                <p>Hai già un account? <a href="login.html">Accedi</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <!-- App Scripts -->
+    <script src="firebase-config.js"></script>
+    <script src="auth.js"></script>
+
+    <script>
+        // Redirect if already logged in
+        redirectIfLoggedIn();
+
+        // Handle registration form
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const errorDiv = document.getElementById('errorMessage');
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+
+            // Validate passwords match
+            if (password !== confirmPassword) {
+                errorDiv.textContent = 'Le password non corrispondono';
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            // Disable button
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Registrazione in corso...';
+            errorDiv.style.display = 'none';
+
+            const result = await registerUser(email, password);
+
+            if (result.success) {
+                alert('✅ Registrazione completata! Benvenuto in PATENTE+');
+                window.location.href = 'index.html';
+            } else {
+                errorDiv.textContent = getItalianErrorMessage(result.error);
+                errorDiv.style.display = 'block';
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Registrati';
+            }
+        });
+    </script>
+</body>
+
+</html>

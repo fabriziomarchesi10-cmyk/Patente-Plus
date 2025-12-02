@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Galleria mappe mentali PATENTE+ - Visualizza e scarica tutte le mappe mentali">
+    <title>Mappe Mentali - PATENTE+</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div>
+                    <div class="logo">
+                        <img src="jpg/ICONA.jpg" alt="PATENTE+" class="logo-img">
+                        <span>PATENTE+</span>
+                    </div>
+                    <nav class="nav-menu">
+                        <a href="index.html">🏠 Home</a>
+                        <a href="pdfs.html">📄 PDF</a>
+                        <a href="infografiche.html">🖼️ Infografiche</a>
+                        <a href="mappe.html" class="active">🧠 Mappe Mentali</a>
+                        <a href="prezzi.html">💰 Prezzi</a>
+                    </nav>
+                </div>
+                <div class="header-stats">
+                    <div class="stat">
+                        <div class="stat-value">17</div>
+                        <div class="stat-label">Mappe Mentali</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>
+                    Galleria <span class="gradient-text">Mappe Mentali</span>
+                </h1>
+                <p>
+                    Visualizza e scarica tutte le mappe mentali per organizzare le tue conoscenze
+                </p>
+            </div>
+        </section>
+
+        <section class="video-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Tutte le Mappe Mentali</h2>
+                    <p class="section-subtitle">Clicca su una mappa per ingrandirla</p>
+                </div>
+                <div class="image-gallery" id="mindMapGallery">
+                    <!-- Mind map items will be dynamically inserted here -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox" onclick="if(event.target === this) closeLightbox()">
+        <div class="lightbox-content">
+            <button class="lightbox-close" onclick="closeLightbox()">×</button>
+            <button class="lightbox-nav prev" onclick="navigateLightbox(-1)">‹</button>
+            <img id="lightboxImg" src="" alt="Mappa Mentale">
+            <button class="lightbox-nav next" onclick="navigateLightbox(1)">›</button>
+            <div class="lightbox-counter" id="lightboxCounter"></div>
+        </div>
+    </div>
+
+    <script src="resources.js"></script>
+    <script>
+        // Check if user is logged in
+        function isUserLoggedIn() {
+            return localStorage.getItem('currentUser') !== null;
+        }
+
+        // Check if resource is unlocked based on video progress
+        function isResourceUnlocked(resourceId) {
+            if (resourceId === 1) return true;
+            if (!isUserLoggedIn()) return false;
+            return localStorage.getItem(`video_${resourceId}_completed`) === 'true';
+        }
+
+        // Get unlocked images for lightbox
+        function getUnlockedImages() {
+            return resources.filter(r => isResourceUnlocked(r.id)).map(r => r.mindMapUrl);
+        }
+
+        // Get count of unlocked resources
+        function getUnlockedCount() {
+            let count = 1;
+            for (let i = 2; i <= 17; i++) {
+                if (localStorage.getItem(`video_${i}_completed`) === 'true') count++;
+            }
+            return count;
+        }
+
+        // Render Mind Map Gallery
+        function renderMindMapGallery() {
+            const gallery = document.getElementById('mindMapGallery');
+
+            gallery.innerHTML = resources.map((resource, index) => {
+                const isUnlocked = isResourceUnlocked(resource.id);
+                const unlockedImages = getUnlockedImages();
+                const unlockedIndex = unlockedImages.indexOf(resource.mindMapUrl);
+
+                if (isUnlocked) {
+                    return `
+                        <div class="gallery-item" onclick="openLightbox('${resource.mindMapUrl}', ${JSON.stringify(unlockedImages)}, ${unlockedIndex})">
+                            <img src="${resource.mindMapUrl}" alt="${resource.title}" loading="lazy">
+                            <div class="gallery-overlay">
+                                <div class="gallery-title">${resource.title}</div>
+                                <div class="gallery-actions">
+                                    <button onclick="event.stopPropagation(); openLightbox('${resource.mindMapUrl}', ${JSON.stringify(unlockedImages)}, ${unlockedIndex})">
+                                        🔍 Visualizza
+                                    </button>
+                                    <button onclick="event.stopPropagation(); downloadFile('${resource.mindMapUrl}', 'Mappa_Mentale_${resource.id}.png')">
+                                        ⬇️ Scarica
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    const message = !isUserLoggedIn() 
+                        ? 'Registrati per sbloccare' 
+                        : `Completa il Video ${resource.id}`;
+                    return `
+                        <div class="gallery-item locked-gallery-item">
+                            <div class="locked-overlay">
+                                <div class="lock-icon">🔒</div>
+                                <div class="gallery-title">${resource.title}</div>
+                                <p class="locked-message">${message}</p>
+                            </div>
+                        </div>
+                    `;
+                }
+            }).join('');
+
+            // Update stats
+            document.querySelector('.stat-value').textContent = `${getUnlockedCount()}/17`;
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            renderMindMapGallery();
+        });
+    </script>
+</body>
+
+</html>

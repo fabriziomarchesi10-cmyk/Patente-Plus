@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step 2 - Segnaletica Avanzata - PATENTE+</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div>
+                    <div class="logo">
+                        <img src="jpg/ICONA.jpg" alt="PATENTE+" class="logo-img">
+                        <span>PATENTE+</span>
+                    </div>
+                    <nav class="nav-menu">
+                        <a href="index.html">🏠 Home</a>
+                        <a href="prezzi.html">💰 Prezzi</a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="step-detail-hero">
+            <div class="container">
+                <div class="step-badge">STEP 2 DI 4</div>
+                <h1><span class="gradient-text">Segnaletica Avanzata</span></h1>
+                <p class="step-price-large">€99<span>/mese 2</span></p>
+            </div>
+        </section>
+
+        <section class="step-detail-section">
+            <div class="container">
+                <div class="step-detail-grid">
+
+                    <div class="offer-details">
+                        <h2>🎯 Cosa Include lo Step 2</h2>
+
+                        <div class="offer-card">
+                            <h3>📹 4 Video Completi</h3>
+                            <ul>
+                                <li><strong>Video 5:</strong> Segnali di Precedenza</li>
+                                <li><strong>Video 6:</strong> Segnali Orizzontali</li>
+                                <li><strong>Video 7:</strong> Semafori e Gerarchia dei Segnali</li>
+                                <li><strong>Video 8:</strong> Segnaletica Stradale Italiana</li>
+                            </ul>
+                        </div>
+
+                        <div class="offer-card">
+                            <h3>📄 Materiali Didattici</h3>
+                            <ul>
+                                <li>✅ 4 PDF scaricabili con riassunti completi</li>
+                                <li>✅ 4 Infografiche visive ad alta risoluzione</li>
+                                <li>✅ 4 Mappe Mentali per memorizzazione rapida</li>
+                            </ul>
+                        </div>
+
+                        <div class="offer-card highlight">
+                            <h3>💎 Vantaggi Esclusivi</h3>
+                            <ul>
+                                <li>🎓 Approfondimento segnaletica complessa</li>
+                                <li>📱 Disponibile su tutti i dispositivi</li>
+                                <li>♾️ Accesso illimitato a vita</li>
+                                <li>🔄 Aggiornamenti gratuiti</li>
+                                <li>💬 Supporto via email</li>
+                            </ul>
+                        </div>
+
+                        <div class="value-proposition">
+                            <h3>🚀 Perché lo Step 2 è Fondamentale?</h3>
+                            <p>Lo Step 2 approfondisce la segnaletica avanzata, essenziale per guidare in sicurezza.
+                                Imparerai a gestire precedenze, interpretare i semafori e comprendere la gerarchia dei
+                                segnali stradali.</p>
+                            <p><strong>Continua il tuo percorso verso la maestria della guida!</strong></p>
+                        </div>
+                    </div>
+
+                    <div class="payment-form-container">
+                        <div class="payment-card">
+                            <h2>💳 Completa l'Acquisto</h2>
+                            <p class="payment-subtitle">Inserisci i tuoi dati per procedere al pagamento</p>
+
+                            <form id="paymentForm" class="payment-form">
+                                <div class="form-group">
+                                    <label for="fullName">Nome e Cognome *</label>
+                                    <input type="text" id="fullName" required placeholder="Mario Rossi">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="email">Email *</label>
+                                    <input type="email" id="email" required placeholder="mario.rossi@email.com">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="phone">Telefono *</label>
+                                    <input type="tel" id="phone" required placeholder="333 1234567" pattern="[0-9]{10}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="address">Indirizzo</label>
+                                    <input type="text" id="address" placeholder="Via Roma 123, Milano">
+                                </div>
+
+                                <div class="payment-summary">
+                                    <div class="summary-row">
+                                        <span>Step 2 - Segnaletica Avanzata</span>
+                                        <span>€99,00</span>
+                                    </div>
+                                    <div class="summary-row total">
+                                        <span>Totale</span>
+                                        <span>€99,00</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group checkbox-group">
+                                    <label>
+                                        <input type="checkbox" required>
+                                        <span>Accetto i <a href="#">termini e condizioni</a> e la <a href="#">privacy
+                                                policy</a></span>
+                                    </label>
+                                </div>
+
+                                <button type="submit" class="btn-payment-submit">
+                                    PROCEDI AL PAGAMENTO - €99
+                                </button>
+
+                                <div class="payment-methods">
+                                    <p>Metodi di pagamento accettati:</p>
+                                    <div class="payment-icons">
+                                        💳 Carta di Credito | 🏦 Bonifico | 📱 PayPal
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="security-badge">
+                            <p>🔒 Pagamento sicuro e protetto</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        document.getElementById('paymentForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const formData = {
+                fullName: document.getElementById('fullName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                address: document.getElementById('address').value,
+                step: 2,
+                amount: 99,
+                timestamp: new Date().toISOString()
+            };
+            localStorage.setItem(`payment_step2_${Date.now()}`, JSON.stringify(formData));
+            alert('✅ Dati ricevuti! Verrai reindirizzato alla pagina di pagamento.');
+        });
+    </script>
+</body>
+
+</html>

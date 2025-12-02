@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lettore video per il sistema di studio interattivo">
+    <title>Video Player - PATENTE+</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="fix-buttons.css">
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div>
+                    <div class="logo">
+                        <img src="jpg/ICONA.jpg" alt="PATENTE+" class="logo-img">
+                        <span>PATENTE+</span>
+                    </div>
+                    <nav class="nav-menu">
+                        <a href="index.html">🏠 Home</a>
+                        <a href="pdfs.html">📄 PDF</a>
+                        <a href="infografiche.html">🖼️ Infografiche</a>
+                        <a href="mappe.html">🧠 Mappe Mentali</a>
+                        <a href="prezzi.html">💰 Prezzi</a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="player-container">
+            <div class="player-wrapper">
+                <video id="videoPlayer" class="video-player" controls controlsList="nodownload" preload="metadata">
+                    <source id="videoSource" src="" type="video/mp4">
+                    Il tuo browser non supporta il tag video.
+                </video>
+
+                <div class="player-controls">
+                    <div class="player-header">
+                        <h1 class="player-title" id="videoTitle">Caricamento...</h1>
+                        <p class="player-description" id="videoDescription"></p>
+                    </div>
+
+                    <div class="progress-bar">
+                        <div class="progress-label">
+                            <span>Progresso del corso</span>
+                            <span id="progressText">0 / 0</span>
+                        </div>
+                        <div class="progress-track">
+                            <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <div class="resource-downloads">
+                        <h3 style="color: var(--text-primary); margin-bottom: var(--spacing-sm); font-size: 1.125rem;">
+                            📥 Risorse Scaricabili</h3>
+                        <div class="download-buttons-grid">
+                            <button type="button" class="btn btn-success" id="downloadPdfBtn">
+                                📄 Scarica PDF
+                            </button>
+                            <button type="button" class="btn btn-success" id="downloadInfographicBtn">
+                                🖼️ Scarica Infografica
+                            </button>
+                            <button type="button" class="btn btn-success" id="downloadMindMapBtn">
+                                🧠 Scarica Mappa Mentale
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="navigation-buttons">
+                        <button type="button" class="btn btn-secondary" id="prevBtn">
+                            ← Video Precedente
+                        </button>
+                        <a href="index.html" class="btn btn-back">
+                            ← Torna alla Galleria
+                        </a>
+                        <button type="button" class="btn btn-primary" id="nextBtn">
+                            Video Successivo →
+                        </button>
+                    </div>
+
+                    <div class="autoplay-toggle">
+                        <span style="color: var(--text-secondary);">Riproduzione automatica</span>
+                        <div class="toggle-switch" id="autoplayToggle">
+                            <div class="toggle-slider"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Lead Capture Popup -->
+    <div id="leadCaptureModal" class="lead-modal">
+        <div class="lead-modal-content lead-modal-wide">
+            <div class="lead-modal-grid">
+                <!-- Video Column -->
+                <div class="lead-video-column">
+                    <video id="welcomeVideo" class="welcome-video" muted loop playsinline>
+                        <source src="Benvenuto_Registrati Ora.mp4" type="video/mp4">
+                    </video>
+                    <button type="button" id="unmuteBtn" class="unmute-btn">
+                        🔇 Clicca per attivare l'audio
+                    </button>
+                </div>
+                
+                <!-- Form Column -->
+                <div class="lead-form-column">
+                    <div class="lead-modal-header">
+                        <h2>🎉 Complimenti per aver completato il primo video!</h2>
+                        <p>Crea il tuo account per continuare:</p>
+                    </div>
+
+                    <form id="leadCaptureForm" class="lead-form">
+                        <div class="form-group">
+                            <label for="firstName">Nome *</label>
+                            <input type="text" id="firstName" name="firstName" required placeholder="Inserisci il tuo nome">
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Cognome *</label>
+                            <input type="text" id="lastName" name="lastName" required placeholder="Inserisci il tuo cognome">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Numero di Cellulare *</label>
+                            <input type="tel" id="phone" name="phone" required placeholder="Es: 3331234567" pattern="[0-9]{10}">
+                            <small>Inserisci 10 cifre senza spazi</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Username *</label>
+                            <input type="text" id="username" name="username" required placeholder="Scegli un username" minlength="4">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password *</label>
+                            <input type="password" id="password" name="password" required placeholder="Scegli una password" minlength="6">
+                            <small>Minimo 6 caratteri</small>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-large">Crea Account e Continua →</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="player.js"></script>
+</body>
+
+</html>

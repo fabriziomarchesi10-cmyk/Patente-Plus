@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Esporta Lead - PATENTE+</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div>
+                    <div class="logo">📚 PATENTE+ Admin</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1><span class="gradient-text">Gestione Lead</span></h1>
+                <p>Esporta i dati dei lead raccolti dal form</p>
+            </div>
+        </section>
+
+        <section class="admin-section">
+            <div class="container">
+                <div class="admin-card">
+                    <h3>📊 Lead Raccolti</h3>
+                    <div id="leadCount" class="stat-number">0</div>
+                    <p class="stat-label">Lead totali nel browser</p>
+
+                    <div id="leadList" class="lead-list"></div>
+
+                    <div class="admin-actions">
+                        <button class="btn btn-primary btn-large" onclick="exportLeadsToCSV()">
+                            📥 Scarica CSV
+                        </button>
+                        <button class="btn btn-secondary" onclick="exportLeadsToTXT()">
+                            📄 Scarica TXT
+                        </button>
+                        <button class="btn btn-secondary" onclick="clearAllLeads()" style="background: var(--error);">
+                            🗑️ Cancella Tutti
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Get all leads from localStorage
+        function getAllLeads() {
+            const leads = [];
+
+            // Check all localStorage keys for lead data
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.startsWith('lead_')) {
+                    try {
+                        const leadData = JSON.parse(localStorage.getItem(key));
+                        leads.push(leadData);
+                    } catch (e) {
+                        console.error('Error parsing lead:', key);
+                    }
+                }
+            }
+
+            // Also check the single leadData key (from old implementation)
+            const singleLead = localStorage.getItem('leadData');
+            if (singleLead) {
+                try {
+                    const leadData = JSON.parse(singleLead);
+                    leads.push(leadData);
+                } catch (e) {
+                    console.error('Error parsing single lead');
+                }
+            }
+
+            return leads;
+        }
+
+        // Display leads on page
+        function displayLeads() {
+            const leads = getAllLeads();
+            document.getElementById('leadCount').textContent = leads.length;
+
+            const leadList = document.getElementById('leadList');
+            if (leads.length === 0) {
+                leadList.innerHTML = '<p style="color: var(--text-muted); text-align: center;">Nessun lead raccolto</p>';
+                return;
+            }
+
+            leadList.innerHTML = leads.map((lead, index) => `
+                <div class="lead-item">
+                    <div class="lead-number">#${index + 1}</div>
+                    <div class="lead-info">
+                        <strong>${lead.firstName} ${lead.lastName}</strong><br>
+                        📱 ${lead.phone}<br>
+                        <small>📅 ${new Date(lead.timestamp).toLocaleString('it-IT')}</small>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Export to CSV
+        function exportLeadsToCSV() {
+            const leads = getAllLeads();
+            if (leads.length === 0) {
+                alert('Nessun lead da esportare');
+                return;
+            }
+
+            // CSV Header
+            let csv = 'Nome,Cognome,Telefono,Data e Ora\n';
+
+            // CSV Rows
+            leads.forEach(lead => {
+                const date = new Date(lead.timestamp).toLocaleString('it-IT');
+                csv += `"${lead.firstName}","${lead.lastName}","${lead.phone}","${date}"\n`;
+            });
+
+            // Download
+            downloadFile(csv, 'leads_patente_plus.csv', 'text/csv');
+        }
+
+        // Export to TXT
+        function exportLeadsToTXT() {
+            const leads = getAllLeads();
+            if (leads.length === 0) {
+                alert('Nessun lead da esportare');
+                return;
+            }
+
+            let txt = '=== LEAD PATENTE+ ===\n\n';
+            txt += `Totale Lead: ${leads.length}\n`;
+            txt += `Esportato il: ${new Date().toLocaleString('it-IT')}\n\n`;
+            txt += '='.repeat(50) + '\n\n';
+
+            leads.forEach((lead, index) => {
+                txt += `LEAD #${index + 1}\n`;
+                txt += `Nome: ${lead.firstName}\n`;
+                txt += `Cognome: ${lead.lastName}\n`;
+                txt += `Telefono: ${lead.phone}\n`;
+                txt += `Data: ${new Date(lead.timestamp).toLocaleString('it-IT')}\n`;
+                txt += '-'.repeat(50) + '\n\n';
+            });
+
+            downloadFile(txt, 'leads_patente_plus.txt', 'text/plain');
+        }
+
+        // Download file helper
+        function downloadFile(content, filename, type) {
+            const blob = new Blob([content], { type: type });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+
+            alert(`✅ File "${filename}" scaricato con successo!`);
+        }
+
+        // Clear all leads
+        function clearAllLeads() {
+            if (!confirm('Sei sicuro di voler cancellare TUTTI i lead? Questa azione non può essere annullata!')) {
+                return;
+            }
+
+            // Remove all lead keys
+            const keysToRemove = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.startsWith('lead_') || key === 'leadData') {
+                    keysToRemove.push(key);
+                }
+            }
+
+            keysToRemove.forEach(key => localStorage.removeItem(key));
+
+            alert('✅ Tutti i lead sono stati cancellati');
+            displayLeads();
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', displayLeads);
+    </script>
+
+    <style>
+        .admin-section {
+            padding: var(--spacing-2xl) 0;
+        }
+
+        .admin-card {
+            background: var(--dark-card);
+            border: 2px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-2xl);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .admin-card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: var(--spacing-md);
+            text-align: center;
+        }
+
+        .lead-list {
+            margin: var(--spacing-xl) 0;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .lead-item {
+            display: flex;
+            gap: var(--spacing-md);
+            padding: var(--spacing-md);
+            background: rgba(0, 86, 59, 0.1);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .lead-number {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            min-width: 50px;
+        }
+
+        .lead-info {
+            flex: 1;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .lead-info strong {
+            color: var(--text-primary);
+            font-size: 1.125rem;
+        }
+
+        .admin-actions {
+            display: flex;
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-xl);
+            flex-wrap: wrap;
+        }
+
+        .admin-actions .btn {
+            flex: 1;
+            min-width: 200px;
+        }
+    </style>
+</body>
+
+</html>

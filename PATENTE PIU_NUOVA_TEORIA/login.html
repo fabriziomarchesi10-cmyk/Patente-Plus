@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - PATENTE+</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div>
+                    <div class="logo">
+                        <img src="jpg/ICONA.jpg" alt="PATENTE+" class="logo-img">
+                        <span>PATENTE+</span>
+                    </div>
+                    <nav class="nav-menu">
+                        <a href="index.html">🏠 Home</a>
+                        <a href="pdfs.html">📄 PDF</a>
+                        <a href="infografiche.html">🖼️ Infografiche</a>
+                        <a href="mappe.html">🧠 Mappe Mentali</a>
+                        <a href="prezzi.html">💰 Prezzi</a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1 class="logo">📚 PATENTE+</h1>
+                <h2>Accedi al tuo Account</h2>
+                <p>Benvenuto! Inserisci le tue credenziali</p>
+            </div>
+
+            <form id="loginForm" class="auth-form">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required placeholder="tuaemail@esempio.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required placeholder="Minimo 6 caratteri">
+                </div>
+
+                <div id="errorMessage" class="error-message" style="display: none;"></div>
+
+                <button type="submit" class="btn btn-primary btn-large">Accedi</button>
+            </form>
+
+            <div class="auth-footer">
+                <p>Non hai un account? <a href="register.html">Registrati ora</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <!-- App Scripts -->
+    <script src="firebase-config.js"></script>
+    <script src="auth.js"></script>
+
+    <script>
+        // Redirect if already logged in
+        redirectIfLoggedIn();
+
+        // Handle login form
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('errorMessage');
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+
+            // Disable button
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Accesso in corso...';
+            errorDiv.style.display = 'none';
+
+            const result = await loginUser(email, password);
+
+            if (result.success) {
+                window.location.href = 'index.html';
+            } else {
+                errorDiv.textContent = getItalianErrorMessage(result.error);
+                errorDiv.style.display = 'block';
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Accedi';
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Scarica tutti i PDF delle presentazioni PATENTE+">
+    <title>PDF - PATENTE+</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div>
+                    <div class="logo">
+                        <img src="jpg/ICONA.jpg" alt="PATENTE+" class="logo-img">
+                        <span>PATENTE+</span>
+                    </div>
+                    <nav class="nav-menu">
+                        <a href="index.html">🏠 Home</a>
+                        <a href="pdfs.html" class="active">📄 PDF</a>
+                        <a href="infografiche.html">🖼️ Infografiche</a>
+                        <a href="mappe.html">🧠 Mappe Mentali</a>
+                        <a href="prezzi.html">💰 Prezzi</a>
+                    </nav>
+                <div class="header-stats">
+                    <div class="stat">
+                        <div class="stat-value">17</div>
+                        <div class="stat-label">PDF Disponibili</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>
+                    Libreria <span class="gradient-text">PDF</span>
+                </h1>
+                <p>
+                    Scarica tutte le presentazioni in formato PDF per studiare offline
+                </p>
+            </div>
+        </section>
+
+        <section class="video-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Tutti i PDF</h2>
+                    <p class="section-subtitle">Clicca su "Scarica" per salvare il PDF sul tuo dispositivo</p>
+                </div>
+                <div class="pdf-grid" id="pdfGrid">
+                    <!-- PDF cards will be dynamically inserted here -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="resources.js"></script>
+    <script>
+        // Check if user is logged in
+        function isUserLoggedIn() {
+            return localStorage.getItem('currentUser') !== null;
+        }
+
+        // Check if resource is unlocked based on video progress
+        function isResourceUnlocked(resourceId) {
+            // Resource 1 is always unlocked
+            if (resourceId === 1) return true;
+            
+            // Must be logged in for resources 2+
+            if (!isUserLoggedIn()) return false;
+            
+            // Check if corresponding video is completed
+            return localStorage.getItem(`video_${resourceId}_completed`) === 'true';
+        }
+
+        // Get count of unlocked resources
+        function getUnlockedCount() {
+            let count = 1; // First is always unlocked
+            for (let i = 2; i <= 17; i++) {
+                if (localStorage.getItem(`video_${i}_completed`) === 'true') {
+                    count++;
+                }
+            }
+            return count;
+        }
+
+        // Render PDF Grid
+        function renderPdfGrid() {
+            const pdfGrid = document.getElementById('pdfGrid');
+
+            pdfGrid.innerHTML = resources.map(resource => {
+                const isUnlocked = isResourceUnlocked(resource.id);
+                
+                if (isUnlocked) {
+                    return `
+                        <div class="pdf-card">
+                            <div class="pdf-icon">📄</div>
+                            <h3>${resource.title}</h3>
+                            <button class="btn btn-primary" onclick="downloadFile('${resource.pdfUrl}', '${resource.title.replace(/[^a-z0-9]/gi, '_')}.pdf')">
+                                ⬇️ Scarica PDF
+                            </button>
+                        </div>
+                    `;
+                } else {
+                    const message = !isUserLoggedIn() 
+                        ? 'Registrati per sbloccare' 
+                        : `Completa il Video ${resource.id}`;
+                    return `
+                        <div class="pdf-card locked-card">
+                            <div class="pdf-icon">🔒</div>
+                            <h3>${resource.title}</h3>
+                            <p class="locked-message">${message}</p>
+                            <button class="btn btn-secondary" disabled>
+                                🔒 Bloccato
+                            </button>
+                        </div>
+                    `;
+                }
+            }).join('');
+
+            // Update stats
+            const unlockedCount = getUnlockedCount();
+            document.querySelector('.stat-value').textContent = `${unlockedCount}/17`;
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            renderPdfGrid();
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Semplice - PATENTE+</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 50px;
+            background: #001a14;
+            color: white;
+        }
+
+        .test-btn {
+            background: #00d9a5;
+            color: #001a14;
+            padding: 20px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px;
+            display: inline-block;
+        }
+
+        .test-btn:hover {
+            background: #00ffc3;
+        }
+
+        #result {
+            margin-top: 30px;
+            padding: 20px;
+            background: #003d2e;
+            border-radius: 8px;
+            min-height: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🔧 Test Funzionalità Base</h1>
+    <p>Se questi pulsanti funzionano, il problema è nel CSS/layout. Se non funzionano, è un problema del browser.</p>
+
+    <div>
+        <button class="test-btn" onclick="test1()">Test 1: Alert</button>
+        <button class="test-btn" onclick="test2()">Test 2: Cambia Testo</button>
+        <button class="test-btn" id="test3btn">Test 3: Event Listener</button>
+        <a href="player.html?video=1" class="test-btn" style="text-decoration: none;">Test 4: Link al Player</a>
+    </div>
+
+    <div id="result">
+        <strong>Risultati:</strong><br>
+        <span id="output">Clicca un pulsante per testare...</span>
+    </div>
+
+    <script>
+        console.log('✅ JavaScript caricato correttamente');
+
+        function test1() {
+            alert('✅ Test 1 PASSATO: onclick funziona!');
+            document.getElementById('output').innerHTML += '<br>✅ Test 1: onclick funziona';
+        }
+
+        function test2() {
+            document.getElementById('output').innerHTML = '✅ Test 2 PASSATO: JavaScript può modificare il DOM!';
+        }
+
+        document.getElementById('test3btn').addEventListener('click', function () {
+            document.getElementById('output').innerHTML = '✅ Test 3 PASSATO: addEventListener funziona!';
+        });
+
+        // Test automatico al caricamento
+        window.addEventListener('load', function () {
+            document.getElementById('output').innerHTML = '✅ Pagina caricata! JavaScript funziona. Ora clicca i pulsanti.';
+        });
+    </script>
+</body>
+
+</html>

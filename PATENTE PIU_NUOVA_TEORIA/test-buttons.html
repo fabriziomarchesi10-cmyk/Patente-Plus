@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Pulsanti - PATENTE+</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container" style="padding: 50px;">
+        <h1>Test Funzionalità Pulsanti</h1>
+
+        <div style="margin: 20px 0;">
+            <h2>Test 1: Pulsante Base</h2>
+            <button class="btn btn-primary" onclick="alert('Pulsante funziona!')">Clicca qui</button>
+        </div>
+
+        <div style="margin: 20px 0;">
+            <h2>Test 2: Link Video</h2>
+            <a href="player.html?video=1" class="btn btn-primary">Vai al Video 1</a>
+        </div>
+
+        <div style="margin: 20px 0;">
+            <h2>Test 3: JavaScript app.js</h2>
+            <button class="btn btn-primary" id="testBtn">Test app.js</button>
+        </div>
+
+        <div style="margin: 20px 0;">
+            <h2>Console Errors:</h2>
+            <div id="errors" style="background: #f00; color: #fff; padding: 10px; border-radius: 5px;">
+                Controlla la console del browser (F12) per errori JavaScript
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Test if JavaScript is running
+        console.log('✅ JavaScript is running');
+
+        // Test button click
+        document.getElementById('testBtn').addEventListener('click', function () {
+            alert('✅ JavaScript funziona correttamente!');
+        });
+
+        // Check if app.js loads
+        window.addEventListener('error', function (e) {
+            document.getElementById('errors').innerHTML += '<br>❌ Error: ' + e.message;
+        });
+    </script>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profilo - PATENTE+</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div>
+                    <div class="logo">
+                        <img src="jpg/ICONA.jpg" alt="PATENTE+" class="logo-img">
+                        <span>PATENTE+</span>
+                    </div>
+                    <nav class="nav-menu">
+                        <a href="index.html">🏠 Home</a>
+                        <a href="pdfs.html">📄 PDF</a>
+                        <a href="infografiche.html">🖼️ Infografiche</a>
+                        <a href="mappe.html">🧠 Mappe Mentali</a>
+                        <a href="prezzi.html">💰 Prezzi</a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1><span class="gradient-text">Il Tuo Profilo</span></h1>
+                <p id="welcomeMessage">Benvenuto nella tua area personale</p>
+            </div>
+        </section>
+
+        <section class="profile-section">
+            <div class="container">
+                <div class="profile-grid">
+                    <!-- User Info Card -->
+                    <div class="profile-card">
+                        <h3>👤 Informazioni Account</h3>
+                        <div class="profile-info">
+                            <div class="info-row">
+                                <span class="info-label">Nome:</span>
+                                <span class="info-value" id="userFirstName">-</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Cognome:</span>
+                                <span class="info-value" id="userLastName">-</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Username:</span>
+                                <span class="info-value" id="userUsername">-</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Telefono:</span>
+                                <span class="info-value" id="userPhone">-</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Membro da:</span>
+                                <span class="info-value" id="memberSince">-</span>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-secondary" id="logoutBtn">🚪 Logout</button>
+                    </div>
+
+                    <!-- Progress Card -->
+                    <div class="profile-card">
+                        <h3>📊 Il Tuo Progresso</h3>
+                        <div class="progress-stats-grid">
+                            <div class="stat-box">
+                                <div class="stat-number" id="completedVideos">0/17</div>
+                                <div class="stat-label">Video Completati</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-number" id="progressPercent">0%</div>
+                                <div class="stat-label">Progresso Totale</div>
+                            </div>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar-fill" id="progressBarFill" style="width: 0%"></div>
+                        </div>
+                        
+                        <h4 style="margin-top: var(--spacing-lg); color: var(--text-primary);">Video Completati:</h4>
+                        <div class="completed-videos-list" id="completedVideosList">
+                            <!-- List of completed videos -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Check if user is logged in
+        function isLoggedIn() {
+            return localStorage.getItem('currentUser') !== null;
+        }
+
+        // Get current user data
+        function getCurrentUserData() {
+            const username = localStorage.getItem('currentUser');
+            if (!username) return null;
+            
+            const allUsers = JSON.parse(localStorage.getItem('allUsers') || '{}');
+            return allUsers[username] || null;
+        }
+
+        // Handle logout
+        function handleLogout() {
+            if (confirm('Sei sicuro di voler uscire?')) {
+                // Save progress before logout
+                const username = localStorage.getItem('currentUser');
+                if (username) {
+                    const allUsers = JSON.parse(localStorage.getItem('allUsers') || '{}');
+                    if (allUsers[username]) {
+                        const videoProgress = {};
+                        for (let i = 1; i <= 17; i++) {
+                            if (localStorage.getItem(`video_${i}_completed`) === 'true') {
+                                videoProgress[`video_${i}_completed`] = true;
+                            }
+                        }
+                        allUsers[username].videoProgress = videoProgress;
+                        localStorage.setItem('allUsers', JSON.stringify(allUsers));
+                    }
+                }
+                
+                // Clear session
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('leadCaptured');
+                localStorage.removeItem('leadData');
+                for (let i = 1; i <= 17; i++) {
+                    localStorage.removeItem(`video_${i}_completed`);
+                }
+                localStorage.removeItem('watchedVideos');
+                
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Video titles
+        const videoTitles = [
+            "Il Linguaggio della Strada",
+            "Segnali di Pericolo",
+            "Segnali di Divieto",
+            "Segnali di Obbligo",
+            "Segnali di Precedenza",
+            "Segnali Orizzontali",
+            "Semafori e Gerarchia",
+            "Segnaletica Stradale",
+            "Pannelli Integrativi",
+            "Segnali Complementari",
+            "Guidatore Proattivo",
+            "Scienza della Frenata",
+            "Regole della Strada",
+            "Chi Passa Per Primo",
+            "Regole del Sorpasso",
+            "Guidare in Italia",
+            "Guidare - Le Regole"
+        ];
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check if logged in
+            if (!isLoggedIn()) {
+                alert('⚠️ Devi effettuare il login per accedere al profilo.');
+                window.location.href = 'index.html';
+                return;
+            }
+
+            const userData = getCurrentUserData();
+            if (!userData) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // Display user info
+            document.getElementById('userFirstName').textContent = userData.firstName || '-';
+            document.getElementById('userLastName').textContent = userData.lastName || '-';
+            document.getElementById('userUsername').textContent = userData.username || '-';
+            document.getElementById('userPhone').textContent = userData.phone || '-';
+            document.getElementById('welcomeMessage').textContent = `Benvenuto ${userData.firstName}!`;
+
+            // Format date
+            if (userData.createdAt) {
+                const date = new Date(userData.createdAt);
+                document.getElementById('memberSince').textContent = date.toLocaleDateString('it-IT');
+            }
+
+            // Calculate progress
+            let completedCount = 0;
+            let completedList = [];
+            
+            for (let i = 1; i <= 17; i++) {
+                if (localStorage.getItem(`video_${i}_completed`) === 'true') {
+                    completedCount++;
+                    completedList.push(`<div class="completed-video-item">✅ Video ${i}: ${videoTitles[i-1]}</div>`);
+                }
+            }
+
+            const percent = Math.round((completedCount / 17) * 100);
+            document.getElementById('completedVideos').textContent = `${completedCount}/17`;
+            document.getElementById('progressPercent').textContent = `${percent}%`;
+            document.getElementById('progressBarFill').style.width = `${percent}%`;
+
+            // Show completed videos list
+            const listContainer = document.getElementById('completedVideosList');
+            if (completedList.length > 0) {
+                listContainer.innerHTML = completedList.join('');
+            } else {
+                listContainer.innerHTML = '<p style="color: var(--text-muted);">Nessun video completato ancora.</p>';
+            }
+
+            // Logout button
+            document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+        });
+    </script>
+
+    <style>
+        .completed-videos-list {
+            margin-top: var(--spacing-sm);
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .completed-video-item {
+            padding: var(--spacing-xs) 0;
+            color: var(--text-secondary);
+            font-size: 0.9375rem;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        
+        .completed-video-item:last-child {
+            border-bottom: none;
+        }
+    </style>
+</body>
+
+</html>
